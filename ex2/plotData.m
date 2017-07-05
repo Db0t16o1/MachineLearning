@@ -11,8 +11,9 @@ figure; hold on;
 %               2D plot, using the option 'k+' for the positive
 %               examples and 'ko' for the negative examples.
 %
-negative = find(y == 0);
 positive = find (y == 1);
+negative = find(y == 0);
+
  plot (X(negative,1),X(negative,2),"kd","LineWidth",2,"MarkerSize",11,X(positive,1),X(positive,2),"g+","MarkerSize",11,'LineWidth',2);
 
 
