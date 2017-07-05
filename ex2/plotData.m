@@ -14,7 +14,7 @@ figure; hold on;
 positive = find (y == 1);
 negative = find(y == 0);
 
- plot (X(negative,1),X(negative,2),"kd","LineWidth",2,"MarkerSize",11,X(positive,1),X(positive,2),"g+","MarkerSize",11,'LineWidth',2);
+ plot (X(positive,1),X(positive,2),"g+","MarkerSize",11,'LineWidth',2,X(negative,1),X(negative,2),"kd","LineWidth",2,"MarkerSize",11);
 
 
 
