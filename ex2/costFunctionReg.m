@@ -19,9 +19,9 @@ grad = zeros(size(theta));
 
 htheta = sigmoid(X * theta);
 J = y' * log(htheta) + (1-y)' * log(1 - htheta);
-J = (-1 .* J) + (lambda/2) * (theta' * theta);
+J = (-1 .* J) + (lambda/2) * (theta([2:size(theta)])' * theta([2:size(theta)]));
 J = J / m;
-
+% theta(1) should not be regularized!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 grad(1) = (1/m)*sum(htheta - y);
 for i= 2:size(theta)
