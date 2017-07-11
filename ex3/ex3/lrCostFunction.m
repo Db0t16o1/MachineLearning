@@ -35,6 +35,22 @@ grad = zeros(size(theta));
 %           temp(1) = 0;   % because we don't add anything for j = 0  
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
+htheta = sigmoid(X * theta);
+J = y' * log(htheta) + (1-y)' * log(1 - htheta);
+J = (-1 .* J) + (lambda/2) * (theta([2:size(theta)])' * theta([2:size(theta)]));
+J = J / m;
+% theta(1) should not be regularized!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+%grad(1) = (1/m)*sum(htheta - y);
+%for i= 2:size(theta)
+%       grad(i) = (1/m)*((htheta-y)' * X(:,i)) + (lambda * theta(i))/m ;
+
+grad = X' * (htheta - y);
+temp = theta;
+temp(1) = 0;
+grad = grad + lambda * temp;
+grad = grad/m ;
+
 
 
 
