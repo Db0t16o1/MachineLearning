@@ -29,13 +29,39 @@ m = size(X, 1);
 J = 0;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
-
+X = [ones(m,1) X];
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
 %               following parts.
 %
 % Part 1: Feedforward the neural network and return the cost in the
 %         variable J. After implementing Part 1, you can verify that your
+	
+yy = zeros(m,num_labels);
+ for i = 1:num_labels
+        yy(:, i) = y == i;
+    end;
+
+	hidden_layer_z = X * Theta1';%dimensions m*25
+	sigmoid_1 = sigmoid(hidden_layer_z);
+	
+	a_hidden = sigmoid_1;%dimensions m*25
+	sigmoid_1 = [ones(m,1) sigmoid_1];
+	a_hidden_1 = sigmoid_1;
+	ans = sigmoid_1 * Theta2';
+	ans = sigmoid(ans);
+	predicted_y = ans;
+	ans_1 = log(ones(size(ans))-ans);
+	ans = log(ans);
+	y_1 = ones(size(yy))-yy;
+	ans = yy.*ans;
+	ans_1 = ans_1.*y_1;
+	ans = ans + ans_1;
+	J = sum(sum(ans),2);
+	J = J/m;
+	J = -1*J;
+J = J + lambda * sum(sum(Theta1(:,2:input_layer_size+1).^2),2)/(2*m);
+J = J + lambda * sum(sum(Theta2(:,2:hidden_layer_size+1).^2),2)/(2*m);
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
 %
@@ -61,29 +87,17 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+del_out = predicted_y - yy;
+del_hl = (del_out * Theta2) .* (a_hidden_1 .* (ones(size(a_hidden_1)) - a_hidden_1)); 
+%del_hl is of dimension m*26
+a_one = X;
+delta_1 = del_hl(:,2:end)' * a_one;
+delta_2 = del_out' * a_hidden_1;
 % -------------------------------------------------------------
 
 % =========================================================================
-
+Theta1_grad = (delta_1 + (lambda * [zeros(size(Theta1,1),1) Theta1(:,2:end)]))/m;
+Theta2_grad = (delta_2 + (lambda * [zeros(size(Theta2,1),1), Theta2(:,2:end)]))/m;
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
